@@ -1,0 +1,519 @@
+(function( $ ) {
+	'use strict';
+	/**
+	 * All of the code for your public-facing JavaScript source
+	 * should reside in this file.
+	 *
+	 * Note: It has been assumed you will write jQuery code here, so the
+	 * $ function reference has been prepared for usage within the scope
+	 * of this function.
+	 *
+	 * This enables you to define handlers, for when the DOM is ready:
+	 *
+	 * $(function() {
+	 *
+	 * });
+	 *
+	 */
+
+	$(document).ready(function () {
+        $( ".fym-tool-container" ).each(function() {
+            // global variables for the widget
+            let current = 1;
+            let steps_amount = 0;
+            let $current_fs, next_fs, $previous_fs; //fieldsets
+            let is_first_step_initial = false;
+
+            let fym_widget_post_id = $(this).attr("fym-form-id");
+
+            let fym_brands_scores_array = {};
+            let brands_full_info_array = {};
+            let fym_result_page_settings = {};
+
+            $('.fym-tool-modal-layout .start-button', this).click(function(){
+                current = 1;
+                steps_amount = 0;
+                fym_brands_scores_array = {};
+                brands_full_info_array = {};
+                fym_result_page_settings = {};
+                is_first_step_initial = true;
+
+                let $fym_widget_modal_container = $(this).parent().find('.modal-window');
+                $fym_widget_modal_container.show();
+
+                if( $fym_widget_modal_container.find('.step-content.not-active:first').find('.info-element').length ){
+                    $fym_widget_modal_container.find(".fym-right-sidebar").show();
+                    fym_set_right_sidebar( $fym_widget_modal_container );
+                }
+
+                $fym_widget_modal_container.find('.step-content.not-active:first').removeClass('not-active');
+                $fym_widget_modal_container.find('.progress-bar-container').removeClass('not-active');
+
+                $fym_widget_modal_container.mouseup(function(e){
+                    if (!$fym_widget_modal_container.find('.fym-tool-steps-container').is(e.target) && $fym_widget_modal_container.find('.fym-tool-steps-container').has(e.target).length === 0) {
+                        $fym_widget_modal_container.hide();
+                        $fym_widget_modal_container.find('.step-content').addClass('not-active');
+                    }
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: fym_tool_js_properties_public.fym_widget_post_data + fym_widget_post_id,
+                    success: function (response) {
+                        let fym_widget_data = response;
+                        let fym_slected_brands_list_id = fym_widget_data['acf']['fym_select_brand_list'];
+                        fym_result_page_settings = fym_widget_data['acf']['fym_result_page_settings'];
+                        if( typeof fym_slected_brands_list_id !== 'undefined' ){
+                            fym_get_selected_brands_info( fym_slected_brands_list_id );
+                        }
+                        jQuery.each( fym_widget_data['acf']['fym_select_brands'], function( i, val ) {
+                            fym_brands_scores_array[val] = 0;
+                        });
+                    }
+                });
+
+                steps_amount = $fym_widget_modal_container.find(".step-content:not(.result-page)").length;
+                if( steps_amount != 0 ){
+                    fym_set_progress_bar( $fym_widget_modal_container, current, steps_amount );
+                }
+            });
+
+            $('.iframe-layout .start-button', this).click(function(){
+                if( $(this).hasClass('not-active') || $(this).hasClass('initial-step') ){
+                }else{
+                    current = 1;
+                    steps_amount = 0;
+
+                    fym_brands_scores_array = {};
+                    brands_full_info_array = {};
+                    fym_result_page_settings = {};
+
+                    let $start_screen = $(this).parent();
+                    let $fym_widget_container = $(this).parent().parent().parent();
+
+                    $.ajax({
+                        type: 'GET',
+                        url: fym_tool_js_properties_public.fym_widget_post_data + fym_widget_post_id,
+                        success: function (response) {
+                            let fym_widget_data = response;
+                            let fym_slected_brands_list_id = fym_widget_data['acf']['fym_select_brand_list'];
+                            fym_result_page_settings = fym_widget_data['acf']['fym_result_page_settings'];
+                            if( typeof fym_slected_brands_list_id !== 'undefined' ){
+                                fym_get_selected_brands_info( fym_slected_brands_list_id );
+                            }
+                            jQuery.each( fym_widget_data['acf']['fym_select_brands'], function( i, val ) {
+                                fym_brands_scores_array[val] = 0;
+                            });
+                        }
+                    });
+
+                    $start_screen.hide();
+                    $fym_widget_container.find('.step-content.not-active:first').removeClass('not-active');
+                    $fym_widget_container.find('.progress-bar-container').removeClass('not-active');
+                    steps_amount = $fym_widget_container.find(".step-content:not(.start-screen, .result-page)").length;
+
+                    if( steps_amount != 0 ){
+                        fym_set_progress_bar( $fym_widget_container, current, steps_amount );
+                    }
+                    $(".button-prev").hide();
+                }
+            });
+
+            // start button action when the fist step in showing on start screen
+            $('.start-button.initial-step', this).click(function(){
+                is_first_step_initial = true;
+                current = 1;
+                steps_amount = 0;
+                fym_brands_scores_array = {};
+                brands_full_info_array = {};
+                fym_result_page_settings = {};
+
+                let $start_screen = $(this).parent();
+                let $fym_widget_container = $(this).parent().parent().parent();
+
+                $.ajax({
+                    type: 'GET',
+                    url: fym_tool_js_properties_public.fym_widget_post_data + fym_widget_post_id,
+                    success: function (response) {
+                        let fym_widget_data = response;
+                        let fym_slected_brands_list_id = fym_widget_data['acf']['fym_select_brand_list'];
+                        fym_result_page_settings = fym_widget_data['acf']['fym_result_page_settings'];
+                        if( typeof fym_slected_brands_list_id !== 'undefined' ){
+                            fym_get_selected_brands_info( fym_slected_brands_list_id );
+                        }
+                        jQuery.each( fym_widget_data['acf']['fym_select_brands'], function( i, val ) {
+                            fym_brands_scores_array[val] = 0;
+                        });
+                    }
+                });
+
+                steps_amount = $fym_widget_container.find(".step-content:not(.result-page)").length;
+                if( steps_amount != 0 ){
+                    fym_set_progress_bar( $fym_widget_container, current, steps_amount );
+                }
+                $start_screen.addClass('not-active');
+                $start_screen.next().removeClass('not-active');
+                $(".button-prev").show();
+                $start_screen.next().parent().find('.progress-bar-container').removeClass('not-active');
+                $start_screen.next().parent().find(".progress-bar-container li").eq($(".step-content").index($start_screen)).addClass("active");
+            });
+
+
+            $(".button-next", this).click(function(){
+                if( $(this).hasClass('not-active') ){
+                } else {
+                    $current_fs = $(this).parent().parent();
+                    next_fs = $current_fs.next();
+                    next_fs.removeClass('not-active');
+                    $current_fs.addClass('not-active');
+                    //activate next step on progressbar using the index of next_fs
+                    let progressbar_index = $(".step-content").index($current_fs);
+                    if( !is_first_step_initial ){
+                        progressbar_index = $(".step-content").index($current_fs) - 1;
+                    }
+                    $current_fs.parent().find(".progressbar li").eq(progressbar_index).addClass("active");
+
+                    fym_set_progress_bar($current_fs, ++current, steps_amount);
+
+                    if( current > 1 ){
+                        next_fs.find(".button-prev").show();
+                    }
+
+                    if( next_fs.hasClass("result-page") ){
+                        fym_show_brands_result( next_fs.find('.brands-result-container'), fym_brands_scores_array, brands_full_info_array, fym_result_page_settings);
+                        next_fs.parent().find('.progress-bar-container').addClass('not-active');
+                    } else {
+                        next_fs.parent().find('.progress-bar-container').removeClass('not-active');
+                    }
+                }
+            });
+
+            $(".fym-tool-modal-layout .button-next", this).click(function(){
+                if( $(this).hasClass('not-active') ){
+                } else {
+                    $current_fs = $(this).parent().parent();
+                    let $next_step_container = $current_fs.next();
+                    if( $next_step_container.find('.info-element').length ){
+                        $next_step_container.parent().parent().find('.fym-right-sidebar').show();
+                        fym_set_right_sidebar( $next_step_container );
+                    } else {
+                        $next_step_container.parent().parent().find('.fym-right-sidebar').hide();
+                    }
+                }
+            });
+            $(".fym-tool-modal-layout .button-prev", this).click(function(){
+                $current_fs = $(this).parent().parent();
+                $previous_fs = $current_fs.prev();
+                if( !$previous_fs.find('.info-element').length ){
+                    $previous_fs.parent().parent().find('.fym-right-sidebar').hide();
+                } else {
+                    $previous_fs.parent().parent().find('.fym-right-sidebar').show();
+                    fym_set_right_sidebar( $previous_fs );
+                }
+            });
+
+            $(".button-prev", this).click(function(){
+                $current_fs = $(this).parent().parent();
+                $previous_fs = $current_fs.prev();
+
+                //de-activate current step on progressbar
+                let progress_index = $(".step-content").index($current_fs) - 1;
+                if( !is_first_step_initial ){
+                    progress_index = $(".step-content").index($current_fs) - 2;
+                }
+                $current_fs.parent().find(".progressbar li").eq(progress_index).removeClass("active");
+
+                //show the previous fieldset
+                $previous_fs.removeClass('not-active');
+                $current_fs.addClass('not-active');
+                fym_set_progress_bar($current_fs, --current, steps_amount);
+                if( current < 2 ){
+                    $current_fs.find(".button-prev").hide();
+                }
+                if( $current_fs.hasClass("result-page") ){
+                    $previous_fs.parent().find('.progress-bar-container').removeClass('not-active');
+                }
+                if( $previous_fs.hasClass("start-screen") ){
+                    $previous_fs.parent().find('.progress-bar-container').addClass('not-active');
+                }
+            });
+
+            /**
+             * Once value is selected:
+             * - make the next button active
+             * - change brand score related to the slected value
+             */
+            $('.step-content .fym-fieldset input', this).change(function() {
+                let $container_selector = $(this).closest('.fym-fieldset');
+                let if_choice_selected = fym_validate_input_field( $container_selector);
+
+                if( if_choice_selected ){
+                    let fym_value_to_add = $(this).attr("brand_value");
+                    let fym_brand_name = $(this).attr("brand_name");
+                    $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                    $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+
+                    if( typeof fym_brand_name !== 'undefined' && typeof fym_brand_name !== 'undefined' ){
+                        fym_brands_scores_array = fym_add_brand_value( fym_brands_scores_array, fym_brand_name, fym_value_to_add );
+                    }
+                } else if( !if_choice_selected ){
+                    $container_selector.parent().find('.button-next').addClass('not-active');
+                }
+            });
+
+            /**
+             * Once value is selected:
+             * - make the next button active
+             * - change brand score related to the slected value
+             */
+            $('.step-content .fym-slider', this).on( "slidechange", function( event, slider ) {
+                let $container_selector = $(this).closest('.fym-fieldset');
+                $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+
+                let slider_value = slider.value;
+                let fym_value_to_add = $(this).parent().attr("brand_value");
+                let fym_brand_name = $(this).parent().attr("brand_name");
+                let fym_percentage_bound = $(this).parent().attr("percentage-bound");
+                let fym_slider_max_val = $(this).parent().attr("max_val");
+                let percentage_limit = (fym_percentage_bound / 100) * fym_slider_max_val;
+                if( slider_value <= percentage_limit ){
+                    if( typeof fym_brand_name !== 'undefined' && typeof fym_brand_name !== 'undefined' ){
+                        fym_brands_scores_array = fym_add_brand_value( fym_brands_scores_array, fym_brand_name, fym_value_to_add );
+                    }
+                }
+
+            } );
+
+            /**
+             *
+             * @param {integer} brands_list_id
+             * @returns array with selected brands data
+             */
+            function fym_get_selected_brands_info( brands_list_id ){
+
+                $.ajax({
+                    type: 'GET',
+                    url: fym_tool_js_properties_public.fym_brands_post_data + brands_list_id,
+                    success: function (response) {
+                        jQuery.each( response['acf']['brands'], function( i, val ) {
+                            if(typeof fym_brands_scores_array[val.brand_name] !== 'undefined') {
+                                brands_full_info_array[val.brand_name] = val;
+                            }
+                        });
+                    }
+                });
+            }
+
+        });
+
+        /**
+         *
+         * Bar Type: Bar (change rogress value)
+         * @param {jQuery} $widget_selector
+         * @param {integer} current_step
+         * @param {integer} steps
+         */
+
+        function fym_set_progress_bar( $widget_selector, current_step, steps ){
+            var percent = parseFloat(100 / steps) * current_step;
+            percent = percent.toFixed();
+            $widget_selector.parent().find(".progress-bar").css("width",percent+"%");
+            if( percent > 100 ){
+                $widget_selector.find(".progress").hide();
+            }
+        }
+
+        $('.step-content .fym-dropdown').change(function() {
+            let $container_selector = $(this).closest('.fym-fieldset');
+            let if_choice_selected = fym_validate_input_field( $container_selector);
+
+            if( if_choice_selected ){
+                $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+            } else if( !if_choice_selected ){
+                $container_selector.parent().find('.button-next').addClass('not-active');
+            }
+        });
+
+        /**
+         * Check if the current step has a selected value.
+         * @param { jQuery selector } $input_container_selector
+         * @returns bool variable
+         */
+        function fym_validate_input_field( $input_container_selector ){
+
+            let is_field_valid = false;
+            let is_field_required = true;
+            let is_any_value_selected = false;
+            let input_type = $input_container_selector.attr("input-type");
+
+            switch ( input_type ) {
+                case "checkbox":
+                    is_any_value_selected = $input_container_selector.find(':checkbox:checked').length > 0;
+                    if( is_field_required && is_any_value_selected ){
+                        is_field_valid = true;
+                    }
+                break;
+
+                case "radiogroup":
+                    is_any_value_selected = $input_container_selector.find('input:checked').length > 0;
+                    if( is_field_required && is_any_value_selected ){
+                        is_field_valid = true;
+                    }
+                break;
+
+                case "dropdown":
+                    is_field_valid = true;
+                break;
+            }
+
+            return is_field_valid;
+        }
+
+        /**
+         *
+         * @param { Object } brands_scores_array global variable
+         * @param { string } brand_name
+         * @param { integer } value_to_add
+         * @returns {Object} brands array with brands' score
+         */
+        function fym_add_brand_value( brands_scores_array, brand_name, value_to_add ){
+            let brand_score = Number(brands_scores_array[brand_name]);
+            brands_scores_array[brand_name] = brand_score + +value_to_add;
+
+            return brands_scores_array;
+        }
+
+        /**
+         *
+         * @param {array} brands_array with brands scores
+         * @returns string - brand name
+         */
+        function fym_get_brand_name_max_score( brands_array ){
+            let max_value = 0;
+            let brand_name = '';
+
+           $.each(brands_array, function(index, item) {
+                if( item >max_value ){
+                    max_value = item;
+                    brand_name = index;
+                }
+            });
+
+            return brand_name;
+        }
+
+        /**
+         *
+         * @param {jQuery} $result_container_selector
+         * @param {object} brands_scores_array array with brand names and scores added during steps
+         * @param {object} brands_full_info_array brands data from brands post type
+         * @param {object} result_page_settings widget settings
+         *
+         * HTML elements will be appended
+         */
+        function fym_show_brands_result( $result_container_selector, brands_scores_array, brands_full_info_array, result_page_settings ){
+            let bool_best_overall_el = result_page_settings['fym_show_brand_best_overall'];
+            let best_overall = '';
+            let brand_with_max_score = fym_get_brand_name_max_score(brands_scores_array);
+
+            let bool_brand_name = result_page_settings['fym_show_brand_name'];
+            let bool_brand_logo = result_page_settings['fym_show_brand_logo'];
+            let bool_brand_rating = result_page_settings['fym_show_rating'];
+            let result_button_link = '';
+
+            if( bool_best_overall_el ){
+                best_overall = '<span class="best-overall-element">Best Overall</span>';
+            }
+
+            $result_container_selector.html('');
+
+            $.each(brands_full_info_array, function(index, item) {
+                let html_output_single_brand = '';
+                let score_css_class = '';
+
+                if( item['brand_name'] == brand_with_max_score ){
+                    score_css_class = 'best-score';
+                    result_button_link = item.brand_affiliate_link;
+                } else {
+                    score_css_class ='';
+                }
+
+                if( bool_brand_logo ){
+                    html_output_single_brand += '<div class="brand-logo-box" attachment-id="'+ item['brand_logo'] +'"></div>';
+                    fym_get_image_url_by_id( item['brand_logo'] );
+                }
+
+                if( bool_brand_name ){
+                    if( item['brand_name'] == brand_with_max_score ){
+                        html_output_single_brand += '<div class="brand-name-box">'+ item['brand_name'] + best_overall +'</div>';
+                    } else {
+                        html_output_single_brand += '<div class="brand-name-box">'+ item['brand_name'] +'</div>';
+                    }
+                }
+
+                if( bool_brand_rating && (typeof item['brand_star_rating'] !== 'undefined') ){
+                    let ratingValue = item['brand_star_rating']
+                    let rounded = (ratingValue | 0);
+
+                    html_output_single_brand += '<div class="brand-rating">';+ item['brand_star_rating'] +'</div>';
+                    for (var j = 0; j < 5 ; j++) {
+                        html_output_single_brand += '<i class="fa '+ ((j < rounded) ? "fa-star" : ((((ratingValue - j) > 0) && ((ratingValue - j) < 1)) ? "fa-star-half-o" : "fa-star-o")) +'" aria-hidden="true"></i>';
+                    }
+                    html_output_single_brand += '<span class="num-score">' + item['brand_star_rating'] + '/5' + '</span></div>';
+                }
+
+                if( typeof item.brand_affiliate_link !== 'undefined' ){
+                    $result_container_selector.append('<a href="'+ item.brand_affiliate_link +'" target="_blank" class="fym-brand-item '+ score_css_class +'">'
+                        + html_output_single_brand
+                    + '</a>');
+                } else {
+                    $result_container_selector.append('<div class="fym-brand-item '+ score_css_class +'">'
+                        + html_output_single_brand
+                    + '</div>');
+                }
+
+            });
+
+            /**
+             * set result link if it is not empty in widget settings
+             * else use link of max score brand affiliate link
+             */
+            if( result_page_settings.fym_result_btn_link.trim() ){
+                result_button_link = result_page_settings.fym_result_btn_link;
+            }
+            $result_container_selector.parent().find('.final-button').attr("href", result_button_link);
+        }
+
+        /**
+         *
+         * @param {Integer} attachment_id brand logo image id
+         */
+        function fym_get_image_url_by_id( attachment_id ){
+            $.ajax({
+                type: 'GET',
+                url: fym_tool_js_properties_public.fym_brand_attachment_url + attachment_id,
+                success: function (response) {
+                    if( typeof response['source_url'] !== 'undefined' ){
+                        $('[attachment-id='+attachment_id+']').append('<img class="brand-logo" src="'+response['source_url']+'"/>');
+                    }
+                }
+            });
+        }
+
+        /**
+         *
+         * @param {jQuery} $step_selector
+         */
+        function fym_set_right_sidebar( $step_selector ){
+            let image_data_url = '';
+            let overlay_color = '';
+
+            image_data_url = $step_selector.find('.info-element').attr('fym-img-data');
+            overlay_color = $step_selector.find('.info-element').attr('fym-overlay-color');
+
+            $step_selector.parent().parent().find('.fym-right-sidebar').css('--overlay-color-var', overlay_color);
+            $step_selector.parent().parent().find('.fym-right-sidebar .image-block').css('background-image', 'url("'+image_data_url+'")');
+        }
+    });
+})( jQuery );

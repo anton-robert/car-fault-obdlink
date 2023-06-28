@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html class="desktop"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-css="sleeknote5">/* base CSS do display sleeknote5 */
+/* reset */
+[hidden],
+template {
+	display: none;
+}
+
+a {
+	background: transparent;
+	text-decoration: none;
+}
+
+a:active,
+a:hover {
+ 	outline: 0;
+}
+
+b,
+strong {
+ 	font-weight: bold;
+}
+
+small {
+ 	font-size: 80%;
+}
+
+sub,
+sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+ 	top: -0.5em;
+}
+
+sub {
+ 	bottom: -0.25em;
+}
+
+img {
+	border: 0;
+	display: inline-block;
+	vertical-align: top;
+	/*vertical-align: text-bottom;*/
+}
+
+img.emoji {
+ 	height: 1em;
+	width: 1em;
+	margin: 0 0.05em 0 0.1em;
+	vertical-align: -0.1em;
+}
+
+svg:not(:root) {
+ 	overflow: hidden;
+}
+
+figure {
+ 	margin: 1em 40px;
+}
+
+hr {
+ 	/*
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    */
+ 	height: 0;
+}
+
+pre {
+ 	overflow: auto;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: monospace, monospace;
+	font-size: 1em;
+}
+
+.input,
+button,
+input,
+optgroup,
+select,
+textarea {
+	color: inherit;
+	/* 1 */
+	font: inherit;
+	/* 2 */
+	margin: 0;
+	/* 3 */
+}
+
+button {
+ 	overflow: visible;
+}
+
+button,
+select {
+ 	text-transform: none;
+}
+
+button[disabled],
+input[disabled] {
+ 	cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+.input,
+input {
+ 	line-height: 1.2;
+}
+
+table {
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0;
+	position: relative;
+}
+
+td {
+ 	vertical-align: top;
+}
+
+html,
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+input[type='radio'],
+input[type='checkbox'],
+textarea,
+p,
+blockquote,
+th,
+td,
+label {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	/*line-height: 1;*/
+	font-family: inherit;
+	text-align: inherit;
+}
+
+fieldset,
+img,
+iframe {
+ 	border: 0;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+th,
+var {
+	font-style: normal;
+	font-weight: normal;
+}
+
+ol,
+ul {
+ 	list-style: none;
+}
+
+caption,
+th {
+ 	text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+q:before,
+q:after {
+ 	content: '';
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+	/*box-sizing: border-box;*/
+	/* 1 */
+	padding: 0;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	margin-left: 10px;
+ 	height: auto;
+}
+
+*,
+*:before,
+*:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	list-style: none;
+	position: relative;
+	overflow: hidden;
+}
+
+/* now the basics */
+html {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.5em;
+	-webkit-text-size-adjust: 100%;
+	font-size: 13px;
+	-webkit-tap-highlight-color: transparent;
+	-ms-content-zooming: none;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: 'kern' 1;
+	font-kerning: normal;
+}
+
+.input,
+input[type='text'],
+input[type='email'],
+input[type='date'],
+input[type='tel'],
+textarea {
+	padding: 12px;
+	font-size: 13px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #aaa;
+	border: 0px #000 solid;
+	width: 100%;
+}
+
+select,
+.select {
+	font-size: 13px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #aaa;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='date']:focus,
+input[type='tel']:focus,
+textarea:focus {
+	outline: none;
+	border-color: solid 1px #ccc;
+}
+
+input[type='date']::-webkit-date-and-time-value {
+	/* @NOTE: enforces proper alignment on Android Chrome and iOS Safari. */
+	text-align: inherit;
+	margin: 0;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+	margin-left: 10px;
+	width: 1em;
+	height: 1em;
+	padding: 0;
+}
+
+input[type='date']::-webkit-datetime-edit-fields-wrapper {
+  	padding: 0;
+}
+
+textarea {
+	overflow: auto;
+	resize: none;
+	display: block;
+}
+
+.textarea,
+textarea {
+ 	min-height: 100px;
+}
+
+section {
+	cursor: default;
+	/*PP - 6h I never get back - this transform assures that background with pointer-events auto will actually receive them WHY?*/
+	transform: translate(0%, 0%);
+}
+
+.linkbutton,
+[data-sn-type='button'],
+section[data-type='teaser'],
+section[name='teaser'],
+[data-sn-custom-action],
+#sleeknoteMinified {
+	cursor: pointer;
+}
+
+[data-sn-type='phone'] *:not(style) {
+    display: flex;
+    align-items: center;
+}
+
+[data-sn-type='phone']>div {
+	padding: 0!important;
+}
+
+[data-sn-type='phone'] label {
+    display: inline;
+    padding: 4px 16px 4px 8px;
+    overflow: visible;
+    z-index: 1;
+    background: 0 0;
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+}
+
+[data-sn-type='phone'] select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    text-indent: -9999999px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+	opacity: 0;
+}
+
+[data-sn-type='phone'] label:after {
+    content: '+' attr(data-value);
+}
+
+[data-sn-type='phone'] [type='tel'] {
+    flex: auto;
+    padding: 10px;
+    font: inherit;
+    color: inherit;
+    background-color: inherit;
+    background-repeat: inherit;
+    background-position: inherit;
+    background-size: inherit;
+    line-height: 1.2;
+	text-align: inherit;
+}
+
+[data-sn-type='phone'] select optgroup {
+	color: initial;
+	font-size: initial;
+}
+
+[data-sn-type='phone'] select[disabled] {
+	cursor: default;
+}
+
+body,
+section,
+form {
+	overflow: hidden;
+}
+
+html {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	overflow-y: auto;
+	height: 100%;
+}
+
+html.editor body,
+html.desktop body {
+	width: calc(100% + 50px);
+}
+
+html.embedded body {
+	overflow: hidden;
+}
+
+
+html.touch * {
+	cursor: pointer !important;
+}
+
+/* section is always wrapper of the box */
+html,
+body,
+iframe,
+button,
+label,
+a,
+input,
+select,
+textarea,
+[data-click],
+section,
+[data-sn-type='text'],
+#video-element {
+	pointer-events: auto !important;
+}
+
+.flex-root [style*="pointer-events"]:not(
+	html,
+	body,
+	iframe,
+	button,
+	label,
+	a,
+	input,
+	select,
+	textarea,
+	[data-click],
+	section,
+	[data-sn-type='text'],
+	#video-element
+) {
+	pointer-events: none !important;
+}
+
+/* remember to apply auto in editor*/
+section > * {
+	pointer-events: none;
+}
+
+.box {
+	overflow: visible;
+	position: absolute;
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	top: 0;
+	left: 0;
+	float: none;
+	width: 100%;
+	height: 100%;
+}
+
+.column-bg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border-radius: 0;
+	z-index: -1;
+}
+
+.element {
+	 position: relative;
+	 width: 100%;
+	 max-width: 100%;
+	 /* now possible to change width */
+	 overflow: visible;
+	 z-index: 2;
+	 height: 100%;
+}
+
+.element > * {
+	width: 100%;
+}
+
+span {
+	word-break: break-word;
+}
+
+.linkbutton p,
+.input p,
+[data-sn-type='button'] p {
+	white-space: nowrap;
+}
+
+.inline-editor p {
+	min-width: 60px;
+	/*word-break: break-all;*/
+}
+
+/*
+    also educated guess, we should never allow that height sleeknotes anyway, and this just limits one text element size
+    effectively that fixes most resizing problem
+	.inline-editor {
+		max-height: 500px;
+	}
+*/
+
+.image-cover,
+.inline-editor * {
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	font-style: inherit;
+	line-height: inherit;
+	text-align: inherit;
+	vertical-align: inherit;
+	white-space: inherit;
+}
+
+.inline-editor strong,
+.inline-editor b {
+	font-weight: bold;
+}
+
+.inline-editor ins {
+	text-decoration: none;
+}
+
+.inline-editor em {
+	font-style: italic;
+}
+
+.inline-editor {
+	line-height: 1.2;
+}
+
+.inline-editor s {
+	text-decoration: line-through;
+}
+
+.inline-editor u {
+	text-decoration: underline;
+}
+
+[data-sn-type='image'] img {
+	max-width: 100%;
+}
+
+
+input[type='radio'],
+input[type='checkbox'] {
+	position: absolute;
+	top: 0;
+	/* not sure seems to better center in the middle*/
+	bottom: 0;
+	margin: auto 0;
+	padding: 0;
+	width: 16px;
+}
+
+[data-sn-subtype='label'] {
+	display: block;
+	position: relative;
+	left: 25px;
+	width: calc(100% - 25px);
+	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+[data-sn-type='button'] {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+[contenteditable='true'] {
+	outline: none !important;
+}
+
+[contenteditable='true']:focus {
+	outline: none !important;
+}
+
+[contenteditable] * {
+	overflow: visible;
+}
+
+html.mobile form {
+	float: none;
+	width: 100%;
+}
+
+[data-sn-custom-step='toggleForm'],
+.element[data-sn-type='close'] {
+	cursor: pointer;
+}
+
+[data-sn-custom-step='toggleForm'] > svg {
+	cursor: pointer;
+	transform: rotate(0deg);
+	transition: 500ms ease all;
+}
+
+.toggle-arrow-down > svg {
+	transform: rotate(0deg) !important;
+}
+
+.toggle-arrow-up > svg {
+	transform: rotate(180deg) !important;
+}
+
+.inline-button {
+	line-height: 0;
+}
+
+.flex-container-container {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-justify-content: flex-start;
+	justify-content: flex-start;
+	width: 100%;
+ 	min-height: 20px;
+}
+
+.flexbox {
+	display: -webkit-flex;
+	display: flex;
+	outline: none!important;
+}
+
+.select,
+select {
+	height: 100%;
+	color: inherit;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	border-radius: 0px;
+	border: 0;
+	outline: none;
+	line-height: 1.2;
+	text-align: inherit;
+	width: 100%;
+	margin: 0;
+	background: transparent;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url('data:image/svg+xml; utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5" width="10" height="5"><path fill-rule="evenodd" d="m5 5 4-5H1"/></svg>');
+	background-repeat: no-repeat;
+	background-position: right 1em center;
+}
+.select p,
+select p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-right: 24px;
+}
+
+.select-wrap {
+	overflow: hidden;
+}
+
+.select {
+	padding: 10px;
+}
+
+select {
+	cursor: pointer;
+	padding: 10px calc(10px + 24px) 10px 10px !important;
+}
+
+option {
+	height: 3em;
+	color: #aaa;
+	background-color: transparent;
+	vertical-align: middle;
+}
+
+select:focus option {
+ color: #444;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	select {
+		background-position: right calc(20px + 1em) center !important;
+		width: calc(100% + 20px) !important;
+		padding-right: 0 !important;
+	}
+}
+
+#SNForm {
+	-webkit-overflow-scrolling: touch;
+}
+
+[data-sn-subtype='seconds'] {
+	display: none;
+}
+
+[data-sn-custom-seconds='true'] [data-sn-subtype='seconds'],
+[data-sn-custom-seconds='1'] [data-sn-subtype='seconds'] {
+	display: inline;
+}
+
+[data-sn-type='clerk'] {
+	min-height: 100px;
+	background: transparent;
+}
+
+.image-cover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+/*text-crop-fix*/
+.inline-editor,
+.inline-editor * {
+	overflow: visible !important;
+}
+
+input::-webkit-date-and-time-value {
+	text-align: left;
+}
+
+/* radio custom margin */
+[data-sn-type=radio] li[style]:first-of-type {
+	margin-top: 0!important;
+}
+[data-sn-type=radio] li[style]:last-of-type {
+	margin-bottom: 0!important;
+}
+/* custom radio */
+[data-accent-enable] input[type=radio],
+[data-accent-enable] input[type=checkbox] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	color: #FFF;
+	width: var(--accent-size);
+	height: var(--accent-size);
+	padding: calc(var(--accent-size) / 8);
+	border-style: var(--accent-style);
+	border-color: var(--accent-outline);
+	border-width: var(--accent-border);
+	border-radius: var(--accent-radius);
+}
+[data-accent-enable] input[type=radio] {
+	background-color: #FFF;
+}
+[data-accent-enable] input[type=radio]:checked {
+	color: var(--accent-color);
+	border-color: currentColor;
+}
+[data-accent-enable] input[type=radio]:after {
+	content: ' ';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: currentColor;
+	border-radius: calc(0% + var(--accent-radius));
+}
+/* custom checkbox */
+[data-accent-enable] input[type=checkbox] {
+	background-color: currentColor;
+}
+[data-accent-enable] input[type=checkbox]:checked {
+	color: var(--accent-color);
+	border: none;
+}
+[data-accent-enable] input[type=checkbox]:after {
+	content: ' ';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-image: var(--accent-enable);
+}
+/* custom radio/checkbox */
+[data-accent-enable],
+[data-accent-enable] {
+	--input-size: var(--accent-size);
+}
+input[type='radio'],
+input[type='checkbox'] {
+	position: absolute !important;
+}
+[data-sn-subtype='label'] {
+	left: calc(var(--input-size, 16px) + 10px) !important;
+	width: calc(100% - calc(var(--input-size, 16px) + 10px)) !important;
+	min-height: var(--input-size, auto) !important;
+	/*line-height: var(--input-size, 1.2) !important;*/
+	padding-left: 0px !important;
+}
+[data-sn-type="radio"] li {
+	max-width: 100%;
+}
+/* video */
+[data-sn-type=video] > span {
+	display: block;
+	height: 100%;
+}
+[data-sn-type=video] > span[data-sn-custom-youtube-url] div[style] {
+	height: 100% !important;
+}
+/* text */
+[data-sn-type=counter] .inline-editor > *,
+[data-sn-type=text] p {
+	width: 100%;
+	flex-shrink: 0;
+}
+
+.inline-editor:not(.image-cover) > * {
+    flex: 1 0 100%;
+}
+
+.inline-editor {
+    flex-wrap: wrap;
+}
+</style><style data-href="https://fonts.googleapis.com/css?family=Poppins:400,300,700">/* devanagari */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z11lFc-K.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1JlFc-K.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecmNE.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJnecmNE.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z11lFc-K.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1JlFc-K.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style><style data-href="https://fonts.googleapis.com/css?family=Raleway:400,300,700">/* cyrillic-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCAIT5lu.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCkIT5lu.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCIIT5lu.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCMIT5lu.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCAIT5lu.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCkIT5lu.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCIIT5lu.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCMIT5lu.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCAIT5lu.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCkIT5lu.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCIIT5lu.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyCMIT5lu.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/raleway/v28/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style></head><body><section id="sleeknote-Success--1" style="width: auto; margin: 0px; display: block; float: left; padding: 4px;" data-name="Success--1" data-type="success" data-profile="desktop">
+						<form data-type="success" class="flex-container flex-root" style="width: 370px; margin: auto; overflow: visible;">
+					
+					<ul class="flex-container-container" style="flex-direction: row; align-items: flex-end; align-content: flex-end; width: 100%; overflow: visible; padding: 0px;" data-id="id-235">
+			<li style="z-index: 3; top: -15px; left: -15px; width: 15px; height: 15px; transform: translate(354px, 35px); overflow: visible; position: absolute; margin: 0px; pointer-events: auto;" data-id="id-236" class="flexbox"><div data-id="Element193" data-element="close-2" data-sn-type="close" class="element" style="width: 100%; height: 100%; border-style: solid; border-color: rgb(0, 0, 0); border-width: 0px; line-height: 0;" data-click="hideBox" data-track-id="Element193"><img draggable="false" unselectable="on" src="blob:https://www.obdlink.com/f321a2de-34a3-47d7-8aec-a1d697c531e3" class="" style="width: 100%; height: 100%;" data-src="https://sleeknotestaticcontent.sleeknote.com/sleeknoteimages/636613615576769769.png"></div></li><li style="overflow: visible; position: absolute; margin: 0px; inset: 0px; z-index: -1; pointer-events: auto;" data-id="id-238" class="flexbox"><div data-id="Element301" data-element="bkg-grid23" data-sn-type="background" class="column-bg" style="border-style: solid; border-color: rgb(0, 0, 0); border-width: 0px; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 2px; min-height: 20px; background-color: rgb(75, 79, 106);"></div></li><li style="overflow: hidden; order: 1; flex: 0 1 auto; width: 100%; align-self: stretch; justify-content: center; margin: 0px; pointer-events: auto;" data-id="id-240" class="flex-container flexbox"><ul class="flex-container-container" style="flex-direction: row; align-items: center; align-content: center; width: 100%; overflow: visible; padding: 40px 30px 30px 40px;" data-id="id-241">
+			<li style="overflow: visible; order: 2; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-242" class="flexbox"><div data-id="Element121" data-element="text-4" data-sn-type="text" class="element" style=""><div class=" inline-editor" raw-html="" style="font-size: 12px; text-align: center; color: rgb(68, 68, 68); font-weight: normal;"><p><strong style="line-height: 30px; color: rgb(255, 255, 255); font-family: poppins; font-size: 38px;">THANK YOU!</strong></p></div></div></li><li style="overflow: visible; order: 3; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-244" class="flexbox"><div data-id="Element130" data-element="text-5" data-sn-type="text" class="element" style=""><div class=" inline-editor" raw-html="" style="font-size: 12px; text-align: left; color: rgb(68, 68, 68); font-weight: normal;"><p style="text-align: center;"><span style="line-height: 20px; font-size: 14px; font-family: poppins; color: rgb(255, 255, 255);">Your discount code is</span></p></div></div></li><li style="overflow: visible; position: absolute; margin: 0px; inset: 0px; z-index: -1; pointer-events: auto; border-radius: 3px;" data-id="id-246" class="flexbox"><div data-id="Element238" data-element="bkg-5" data-sn-type="background" class="column-bg" style="background-color: rgb(0, 0, 0); background-repeat: no-repeat; border-radius: 3px;"></div></li><li style="overflow: visible; order: 5; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-248" class="flexbox"><div data-id="Element337" data-element="text-7" data-sn-type="text" class="element" style=""><div class=" inline-editor" raw-html="" style="font-size: 12px; text-align: left; color: rgb(68, 68, 68); font-weight: normal; background-color: rgb(255, 255, 255); border-radius: 3px;"><p style="text-align: center;"><span style="font-size: 16px; color: rgb(0, 0, 0); font-family: raleway, sans-serif; line-height: 40px;">WELCOME-SAVE-10</span></p></div></div></li><li style="overflow: visible; order: 7; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-250" class="flexbox"><div data-id="Element346" data-element="text-8" data-sn-type="text" class="element" style=""><div class=" inline-editor" raw-html="" style="font-size: 12px; text-align: left; color: rgb(68, 68, 68); font-weight: normal; background-color: transparent;"><p style="text-align: center;"><span style="color: rgb(255, 255, 255); font-family: poppins; line-height: 1.4; font-size: 14px;"><span class="ql-cursor">﻿</span></span><span style="color: rgb(255, 255, 255); font-family: poppins; line-height: 20px; font-size: 14px;">Enter this during checkout</span></p><p style="text-align: center;"><span style="color: rgb(255, 255, 255); font-family: poppins; line-height: 20px; font-size: 14px;">to get 10% off your next purchase</span></p></div></div></li><li style="overflow: visible; order: 1; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-252" class="flexbox"><div data-id="Element355" data-element="text-9" data-sn-type="text" class="element" style=""><div class=" inline-editor" raw-html="" style="font-size: 12px; text-align: left; color: rgb(68, 68, 68); font-weight: normal; background-color: transparent;"><p style="text-align: center;"><strong style="line-height: 22px; color: rgb(255, 166, 8); font-size: 12px; font-family: poppins;">YOU'RE IN!</strong></p></div></div></li><li style="overflow: visible; order: 6; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-254" class="flexbox"><div data-id="Element373" data-element="spacer-2" data-sn-type="spacer" class="element" style=""><div aria-label="false" class=" spacer" raw-html="" style="height: 10px;"></div></div></li><li style="overflow: visible; order: 4; flex: 0 1 auto; width: calc(100% - 10px); align-self: auto; justify-content: center; margin: 0px 10px 10px 0px; pointer-events: auto;" data-id="id-256" class="flexbox"><div data-id="Element400" data-element="spacer-4" data-sn-type="spacer" class="element" style="height: 100%;"><div aria-label="false" class=" spacer" raw-html="" style="height: 2px;"></div></div></li>
+		</ul></li>
+		</ul>
+				</form>
+					</section></body></html>

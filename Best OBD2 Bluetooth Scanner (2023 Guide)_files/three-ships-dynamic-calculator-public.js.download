@@ -1,0 +1,343 @@
+(function( $ ) {
+	'use strict';
+
+	/**
+	 * All of the code for your public-facing JavaScript source
+	 * should reside in this file.
+	 *
+	 * Note: It has been assumed you will write jQuery code here, so the
+	 * $ function reference has been prepared for usage within the scope
+	 * of this function.
+	 *
+	 * This enables you to define handlers, for when the DOM is ready:
+	 *
+	 * $(function() {
+	 *
+	 * });
+	 *
+	 * When the window is loaded:
+	 *
+	 * $( window ).load(function() {
+	 *
+	 * });
+	 *
+	 * ...and/or other possibilities.
+	 *
+	 * Ideally, it is not considered best practise to attach more than a
+	 * single DOM-ready or window-load handler for a particular page.
+	 * Although scripts in the WordPress core, Plugins and Themes may be
+	 * practising this, we should strive to set a better example in our own work.
+	 */
+	$(document).ready(function(){
+        $( ".dynamic-calculator-container" ).each(function() {
+            let current = 1;
+            let step_multiplier = 1;
+            let steps_amount = 0;
+            let $current_step, $next_step, $previous_step; //fieldsets
+
+            let dc_post_id = $(this).attr("widget-id");
+            let dc_widget_settings = {};
+            dc_widget_settings[dc_post_id]={};
+            dc_widget_settings[dc_post_id]['result_price'] = 0; //unique variable
+
+            $('.start-button', this).click(function(){
+                if( $(this).hasClass('not-active') ){
+                } else {
+                    current = 1;
+                    steps_amount = 0;
+                    step_multiplier = 1;
+                    dc_widget_settings[dc_post_id]['result_price'] = 0;
+
+                    let $start_screen = $(this).parent();
+                    let $dc_widget_container = $(this).parent().parent().parent();
+
+                    dc_get_widget_data(dc_post_id);
+
+                    $start_screen.hide();
+                    $dc_widget_container.find('.single-step-container.not-active:first').removeClass('not-active');
+                    $dc_widget_container.find('.progress-bar-container').removeClass('not-active');
+                    steps_amount = $dc_widget_container.find(".single-step-container:not(.start-screen, .result-page)").length;
+
+                    if( steps_amount != 0 ){
+                        dc_set_progress_bar( $dc_widget_container, current, steps_amount );
+                    }
+                    $(".button-prev").hide();
+                    $dc_widget_container.find('.progress-bar-container').removeClass('not-active');
+                }
+            });
+
+            $(".button-next", this).click(function(){
+                if( $(this).hasClass('not-active') ){
+                } else {
+                    $current_step = $(this).parent().parent();
+                    $next_step = $current_step.next();
+                    $current_step.addClass('not-active');
+                    $next_step.removeClass('not-active');
+
+                    // progressbar: numbers type
+                    $current_step.parent().find(".progress-bar-container li").eq($(".single-step-container").index($current_step) - 1).addClass("active");
+
+                    // progressbar: bar type
+                    dc_set_progress_bar($current_step, ++current, steps_amount);
+
+                    if( $next_step.hasClass('result-page') ){
+                        $next_step.parent().find('.progress-bar-container').hide();
+                    }
+
+                    if( current > 1 ){
+                        $next_step.find(".button-prev").show();
+                    }
+
+                    step_multiplier = $current_step.find('.dc-fieldset input:checked').attr("dc-multiplier");
+                    if( step_multiplier ){
+                        dc_widget_settings[dc_post_id]['result_price'] = dc_increase_price(dc_widget_settings[dc_post_id]['result_price'], step_multiplier);
+                    }
+
+                    if( $next_step.hasClass("result-page") ){
+                        let price_padding_value = dc_widget_settings[dc_post_id]['dc_global_settings_group']['price_padding_value'];
+                        dc_show_result($next_step, dc_widget_settings[dc_post_id]['result_price'], price_padding_value );
+                    }
+                }
+            });
+
+            $(".button-prev", this).click(function(){
+                $current_step = $(this).parent().parent();
+                $previous_step = $current_step.prev();
+
+                $previous_step.removeClass('not-active');
+                $current_step.addClass('not-active');
+
+                // progressbar: numbers type
+                $current_step.parent().find(".progress-bar-container li").eq($(".single-step-container").index($current_step) - 1).removeClass("active");
+
+                // progressbar: bar type
+                dc_set_progress_bar($current_step, --current, steps_amount);
+
+                if( current < 2 ){
+                    $current_step.find(".button-prev").hide();
+                }
+                if( $current_step.hasClass("result-page") ){
+                    $previous_step.parent().find('.progress-bar-container').show();
+                }
+            });
+
+            /**
+             * Once value is selected:
+             * - make the next button active
+            */
+            $('.layout-multistep .dc-fieldset input', this).change(function() {
+                let $container_selector = $(this).closest('.dc-fieldset');
+                let if_choice_selected = validate_input_field( $container_selector);
+                let choice_multiplier_value = 1;
+                if( if_choice_selected ){
+                    $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                    $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+                    choice_multiplier_value = $(this).attr("dc-multiplier");
+                } else if( !if_choice_selected ){
+                    $container_selector.parent().find('.button-next').addClass('not-active');
+                }
+            });
+
+            $('.layout-multistep .dropdown').change(function() {
+                let $container_selector = $(this).closest('.dc-fieldset');
+                let if_choice_selected = validate_input_field( $container_selector);
+
+                if( if_choice_selected ){
+                    $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                    $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+                } else if( !if_choice_selected ){
+                    $container_selector.parent().find('.button-next').addClass('not-active');
+                }
+            });
+
+            $('.layout-multistep .dc-slider').slider({
+                slide: function( event, ui ) {
+                    let $container_selector = $(this).closest('.dc-fieldset');
+                    $container_selector.parent().find('.button-next.not-active').removeClass('not-active');
+                    $container_selector.parent().find('.start-button.not-active').removeClass('not-active');
+                }
+              });
+
+            /**
+             *
+             * @param {integer} dynamic_calculator_post_id
+             */
+            function dc_get_widget_data( dynamic_calculator_post_id ){
+                $.ajax({
+                    type: 'GET',
+                    url: dynamic_calculator_js_properties_public.dynamic_calculator_post_data + dynamic_calculator_post_id,
+                    success: function (response) {
+                        dc_widget_settings[dynamic_calculator_post_id] = response['acf'];
+                        dc_widget_settings[dynamic_calculator_post_id]['result_price'] = dc_widget_settings[dynamic_calculator_post_id]['dc_global_settings_group']['starting_price_value'];
+                    }
+                });
+            }
+
+            let $current_widget_selector_container = $(this).find('.calculator-steps-container');
+            if( $current_widget_selector_container.hasClass('layout-inline') ){
+                current = 1;
+                steps_amount = 0;
+                step_multiplier = 1;
+                dc_widget_settings[dc_post_id]['result_price'] = 0;
+                dc_get_widget_data(dc_post_id);
+
+                $current_widget_selector_container.find(".calculate-result-btn").click(function(){
+                    let $current_form_container = $(this).parent();
+                    let $steps_selector = $current_form_container.find(".single-step-container:not(.result-page)");
+                    let $result_page_selector = $current_form_container.find(".single-step-container.result-page");
+                    setTimeout(function() {
+                        let price_padding_value = dc_widget_settings[dc_post_id]['dc_global_settings_group']['price_padding_value'];
+                        if( price_padding_value ){
+                            dc_show_result($result_page_selector, dc_widget_settings[dc_post_id]['result_price'], price_padding_value );
+                        }
+                    }, 1000);
+
+                    $steps_selector.hide();
+                    $(this).hide();
+                    $result_page_selector.removeClass('not-active');
+                    $result_page_selector.show();
+
+                });
+
+                $current_widget_selector_container.find('.dc-fieldset input').change(function() {
+                    let $container_selector = $(this).closest('.dc-fieldset');
+                    let if_choice_selected = validate_input_field( $container_selector);
+                    let choice_multiplier_value = 1;
+                    if( if_choice_selected ){
+                        choice_multiplier_value = $(this).attr("dc-multiplier");
+                        dc_widget_settings[dc_post_id]['result_price'] = dc_increase_price(dc_widget_settings[dc_post_id]['result_price'], choice_multiplier_value);
+                        $current_widget_selector_container.find(".calculate-result-btn").removeClass('not-active');
+                    }
+                });
+
+                 $current_widget_selector_container.find('.dc-slider').slider({
+                    slide: function( event, ui ) {
+                        $current_widget_selector_container.find(".calculate-result-btn").removeClass('not-active');
+                    }
+                  });
+            }
+        });
+
+        /**
+         *
+         * Bar Type: Bar (change rogress value)
+         * Multipage Layout only
+         * @param {jQuery} $widget_selector
+         * @param {integer} current_step
+         * @param {integer} steps
+         */
+
+        function dc_set_progress_bar( $widget_selector, current_step, steps ){
+            var percent = parseFloat(100 / steps) * current_step;
+            percent = percent.toFixed();
+            $widget_selector.parent().find(".progress-bar").css("width",percent+"%");
+            if( percent > 100 ){
+                $widget_selector.find(".progress").hide();
+            }
+        }
+
+        /**
+         * Check if the current step has a selected value.
+         * @param { jQuery selector } $input_container_selector
+         * @returns bool variable
+         */
+        function validate_input_field( $input_container_selector ){
+            let is_field_valid = false;
+            let is_field_required = true;
+            let is_any_value_selected = false;
+            let input_type = $input_container_selector.attr("input-type");
+            switch ( input_type ) {
+                case "checkbox":
+                    is_any_value_selected = $input_container_selector.find(':checkbox:checked').length > 0;
+                    if( is_field_required && is_any_value_selected ){
+                        is_field_valid = true;
+                    }
+                break;
+
+                case "radio":
+                    is_any_value_selected = $input_container_selector.find('input:checked').length > 0;
+                    if( is_field_required && is_any_value_selected ){
+                        is_field_valid = true;
+                    }
+                break;
+
+                case "dropdown":
+                    is_field_valid = true;
+                break;
+
+                case "slider":
+                    $input_container_selector.find( ".dc-slider " ).slider({
+                        slide: function( event, ui ) {
+                            is_field_valid = true;
+                        }
+                      });
+                break;
+            }
+
+            return is_field_valid;
+        }
+
+        /**
+         *
+         * @param {double} price_value
+         * @param {double} multiplier_value
+         * @returns
+         */
+        function dc_increase_price( price_value, multiplier_value ){
+
+            price_value = price_value * multiplier_value;
+            return price_value;
+        }
+
+        /**
+         *
+         * @param {jQuery} $result_page_selector
+         * @param {integer} final_price
+         * @param {integer} price_padding_value
+         */
+        function dc_show_result( $result_page_selector, final_price, price_padding_value ){
+
+            $result_page_selector.find('.price-result').html('');
+
+            let price_to_show = '';
+            let bottom_padding_value = final_price - price_padding_value;
+            let top_padding_value = final_price + price_padding_value;
+            price_to_show = '$' + parseInt(bottom_padding_value) + ' - ' + '$'+ parseInt(top_padding_value);
+
+            $result_page_selector.find('.price-result').html(price_to_show);
+        }
+
+        /**
+         * Single page template: shortcode functionality
+         */
+        $('.shortcode-block .copy-button').on('click', function () {
+            let $copy_text_container = $(this).parent();
+            dc_copy_to_clipboard( $copy_text_container.find('.shortcode-txt') );
+            $copy_text_container
+                .find('.copy-message')
+                .text('Copied to clipboard!')
+                .css({
+                    'color': '#10B215'
+                });
+
+            setTimeout(function () {
+                $copy_text_container
+                    .find('.copy-message')
+                    .text('Click to copy to clipboard')
+                    .css({
+                        'color': ''
+                    });
+            }, 1500)
+        });
+
+        function dc_copy_to_clipboard( element ) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+
+	});
+
+})( jQuery );
